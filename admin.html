@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4f0">
+    <title>商品管理｜Omni Cubed Taiwan</title>
+    <link rel="stylesheet" href="admin.css">
+    <script type="module" src="admin.js"></script>
+  </head>
+  <body>
+    <header class="admin-header">
+      <a class="brand" href="/" aria-label="回到 Omni Cubed Taiwan 首頁">
+        <span class="brand-mark" aria-hidden="true">OC</span>
+        <span class="brand-name">OMNI CUBED<span>TAIWAN ADMIN</span></span>
+      </a>
+      <div class="account-area">
+        <span id="account-label">尚未登入</span>
+        <button class="button button-muted" id="sign-out" type="button" hidden>登出</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <section class="login-panel panel" id="login-panel">
+        <p class="eyebrow"><span></span> PRIVATE CATALOG MANAGEMENT</p>
+        <h1>商品管理後台</h1>
+        <p>登入後可管理原廠產品目錄、台幣售價和網站上架狀態。</p>
+        <button class="button button-dark" id="google-sign-in" type="button">
+          使用 Google 帳號登入 <span aria-hidden="true">↗</span>
+        </button>
+        <p class="status-message" id="login-status" role="status" aria-live="polite"></p>
+        <p class="auth-help">若 Google 登入尚未啟用，請至 <a href="https://console.firebase.google.com/project/omnicubedtaiwan/authentication/providers" target="_blank" rel="noreferrer">Firebase Authentication 設定</a>開啟 Google provider。</p>
+        <a class="back-link" href="/">← 回到台灣代理網站</a>
+      </section>
+
+      <section class="catalog-panel" id="catalog-panel" hidden>
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow"><span></span> PRODUCT CATALOG</p>
+            <h1>商品管理</h1>
+            <p>選擇要在台灣網站展示的產品，設定新台幣整數售價；不填售價的商品會顯示「歡迎詢價」。</p>
+          </div>
+          <a class="button button-muted" href="/">預覽網站 <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="notice panel">
+          <div>
+            <strong>原廠目錄匯入</strong>
+            <p>從 Omni Cubed Europe 公開目錄匯入產品名稱、分類、圖片和原廠連結。匯入不會帶入歐洲價格，也不會覆寫你已編輯的商品。</p>
+          </div>
+          <button class="button button-outline" id="import-catalog" type="button">匯入原廠產品目錄</button>
+        </div>
+
+        <div class="status-message" id="admin-status" role="status" aria-live="polite"></div>
+        <div class="stats" aria-live="polite">
+          <div class="stat-card"><span>目錄產品</span><strong id="total-count">0</strong></div>
+          <div class="stat-card"><span>目前上架</span><strong id="published-count">0</strong></div>
+          <div class="stat-card"><span>已設定售價</span><strong id="priced-count">0</strong></div>
+        </div>
+
+        <div class="catalog-toolbar">
+          <label class="search-box">
+            <span class="sr-only">搜尋商品</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg>
+            <input id="catalog-search" type="search" placeholder="搜尋產品名稱" autocomplete="off">
+          </label>
+          <label class="category-select">產品分類
+            <select id="category-filter">
+              <option value="all">全部分類</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">原廠產品</th>
+                <th scope="col">分類</th>
+                <th scope="col">台幣售價</th>
+                <th scope="col">上架</th>
+                <th scope="col"><span class="sr-only">儲存</span></th>
+              </tr>
+            </thead>
+            <tbody id="product-rows"></tbody>
+          </table>
+          <p class="empty-state" id="empty-state" hidden>沒有符合搜尋條件的商品。</p>
+        </div>
+        <p class="catalog-footnote">商品資料來源：<a href="https://www.omnicubedeurope.com/webshop/" target="_blank" rel="noreferrer">Omni Cubed Europe 原廠目錄</a>。上架前請確認台灣供貨、價格、稅額及圖片使用授權。</p>
+      </section>
+    </main>
+  </body>
+</html>

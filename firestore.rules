@@ -1,0 +1,112 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isCatalogAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'linlilung@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
+
+    function validProduct() {
+      return request.resource.data.keys().hasOnly([
+          'name',
+          'category',
+          'image',
+          'sourceUrl',
+          'priceTwd',
+          'published',
+          'updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'name',
+          'category',
+          'image',
+          'sourceUrl',
+          'priceTwd',
+          'published',
+          'updatedAt'
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 200
+        && request.resource.data.category is string
+        && request.resource.data.category.size() > 0
+        && request.resource.data.category.size() <= 50
+        && request.resource.data.image is string
+        && request.resource.data.image.size() <= 1000
+        && request.resource.data.sourceUrl is string
+        && request.resource.data.sourceUrl.matches('^https://www\\.omnicubedeurope\\.com/webshop/.*$')
+        && (
+          request.resource.data.priceTwd == null
+          || (
+            request.resource.data.priceTwd is int
+            && request.resource.data.priceTwd >= 0
+            && request.resource.data.priceTwd <= 1000000000
+          )
+        )
+        && request.resource.data.published is bool
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    match /inquiries/{inquiryId} {
+      allow create: if request.resource.data.keys().hasOnly([
+          'name',
+          'company',
+          'email',
+          'phone',
+          'product',
+          'message',
+          'status',
+          'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'name',
+          'company',
+          'email',
+          'phone',
+          'product',
+          'message',
+          'status',
+          'createdAt'
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.company is string
+        && request.resource.data.company.size() <= 200
+        && request.resource.data.email is string
+        && request.resource.data.email.size() > 3
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$')
+        && request.resource.data.phone is string
+        && request.resource.data.phone.size() <= 50
+        && request.resource.data.product is string
+        && request.resource.data.product.size() <= 200
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0
+        && request.resource.data.message.size() <= 4000
+        && request.resource.data.status == 'new'
+        && request.resource.data.createdAt == request.time;
+
+      allow read, update, delete: if false;
+    }
+
+    match /products/{productId} {
+      allow read: if isCatalogAdmin() || resource.data.published == true;
+      allow create, update: if isCatalogAdmin() && validProduct();
+      allow delete: if isCatalogAdmin();
+    }
+
+    match /siteSettings/{settingId} {
+      allow read: if settingId == 'catalog' || isCatalogAdmin();
+      allow create, update: if settingId == 'catalog'
+        && isCatalogAdmin()
+        && request.resource.data.keys().hasOnly(['initialized', 'updatedAt'])
+        && request.resource.data.keys().hasAll(['initialized', 'updatedAt'])
+        && request.resource.data.initialized is bool
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
+    }
+  }
+}
