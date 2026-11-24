@@ -98,6 +98,14 @@ service cloud.firestore {
       allow delete: if isCatalogAdmin();
     }
 
+    match /productPricing/{productId} {
+      allow read, write: if isCatalogAdmin();
+
+      match /sourceQuotes/{quoteId} {
+        allow read, write: if isCatalogAdmin();
+      }
+    }
+
     match /siteSettings/{settingId} {
       allow read: if settingId == 'catalog' || isCatalogAdmin();
       allow create, update: if settingId == 'catalog'
