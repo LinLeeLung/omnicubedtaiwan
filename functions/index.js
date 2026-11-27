@@ -16,7 +16,7 @@ const db = getFirestore();
 const notificationAddress = 'linlilung@gmail.com';
 const gmailAppPassword = defineSecret('GMAIL_APP_PASSWORD');
 const pricingAdminEmail = 'linlilung@gmail.com';
-const pricingDiscount = 0.7;
+const pricingDiscount = 0.8;
 const allowedProducts = new Set([
   'Aqua-Jaw Carry Vise *pair*',
   'Stealth Grip',

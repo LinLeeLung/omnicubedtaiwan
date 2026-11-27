@@ -60,7 +60,7 @@ function calculateSuggestedPrice({
     throw new Error('毛利率需介於 0%（含）至 100%（不含）。');
   }
 
-  const dealerCostTwd = sourcePrice * 0.7 * exchangeRate;
+  const dealerCostTwd = sourcePrice * 0.8 * exchangeRate;
   const dutyTwd = dealerCostTwd * dutyPercent / 100;
   const shippingTwd = dealerCostTwd * shippingPercent / 100;
   const totalCostTwd = dealerCostTwd + dutyTwd + shippingTwd;

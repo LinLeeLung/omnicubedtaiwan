@@ -56,11 +56,11 @@ test('calculates wholesale cost, fees, and gross-margin price', () => {
   });
 
   assert.deepEqual(result, {
-    dealerCostTwd: 2240,
-    dutyTwd: 112,
-    shippingTwd: 179.2,
-    totalCostTwd: 2531.2,
-    suggestedPriceTwd: 3616,
+    dealerCostTwd: 2560,
+    dutyTwd: 128,
+    shippingTwd: 204.8,
+    totalCostTwd: 2892.8,
+    suggestedPriceTwd: 4133,
   });
 });
 

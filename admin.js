@@ -156,7 +156,7 @@ function renderPricingPanel(product, pricing = {}) {
       : '尚無自動取得紀錄';
   const calculationDetails = hasSuggestedPrice
     ? `<ul class="calculation-breakdown">
-        <li><span>經銷進貨價（原廠價 × 70%）</span><strong>${formatTwd(calculation.dealerCostTwd)}</strong></li>
+        <li><span>經銷進貨價（原廠價 × 80%）</span><strong>${formatTwd(calculation.dealerCostTwd)}</strong></li>
         <li><span>關稅</span><strong>${formatTwd(calculation.dutyTwd)}</strong></li>
         <li><span>運輸成本</span><strong>${formatTwd(calculation.shippingTwd)}</strong></li>
         <li><span>含費用總成本</span><strong>${formatTwd(calculation.totalCostTwd)}</strong></li>
